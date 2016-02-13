@@ -13,19 +13,46 @@ public class Main
 		{
 			ui.print("[1] List Animals\n[2] Add Animal\n[3] Remove Animal\n[X] Exit\n");
 
-			switch(ui.getInput("").substring(0).toUpperCase())
+			switch(ui.getChar(""))
 			{
 				case "1":
-					List<String> animals = animalDB.listAnimals();
-					for(String a : animals)
+					Map<Integer, Animal> animals = animalDB.listAnimals();
+					// for(Animal a : animals)
+
+					// http://stackoverflow.com/a/1066603
+					Iterator it = animals.entrySet().iterator();
+					while(it.hasNext())
 					{
-						ui.print(a);
+						Map.Entry pair = (Map.Entry)it.next();
+						Animal a = (Animal)pair.getValue();
+						ui.print(pair.getKey() + " - " + a.getName() + "\n");
+						it.remove();
 					}
+
+
+
+					// for(int i = 0; i < animals.size(); i++)
+					// {
+					// 	ui.print(a);
+					// }
+					//
+					// do
+					// {
+					//
+					// }
+					// while(false);
+
+					// switch(ui.getChar(""))
+					// {
+					//
+					// }
+
 					break;
 
 				case "2":
 					Animal animal = new Animal(
 						ui.getInput("Name"),
+						ui.getInput("Color"),
 						ui.getInt("# of Legs"),
 						ui.getInt("# of Arms"),
 						ui.getInt("# of Tails"),

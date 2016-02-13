@@ -36,6 +36,11 @@ public class UI
 		return input.nextLine();
 	}
 
+	public String getChar(String prompt)
+	{
+		return getInput(prompt).substring(0).toUpperCase();
+	}
+
 	public int getInt(String prompt)
 	{
 		int in;
