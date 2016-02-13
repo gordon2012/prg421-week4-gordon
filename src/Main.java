@@ -21,19 +21,28 @@ public class Main
 		int menu = 0;
 		do
 		{
-			ui.print("[1] List Animals\n[2] Add Animal\n[3] Remove Animal\n[X] Exit\n");
+			ui.print("\n[1] Inspect Animal\n[2] Add Animal\n[3] Remove Animal\n[X] Exit\n");
 
 			switch(ui.getChar(""))
 			{
 				case "1":
+					ui.print("Which one? (0 to cancel)\n");
 					List<Integer> animals = animalDB.getAllIds();
-
 					for(int i = 0; i < animals.size(); i++)
 					{
 						ui.print((i+1));
 						ui.debug("(id: " + animals.get(i) + ")");
 						ui.print(" - " + animalDB.getById(animals.get(i)).getName() +"\n");
 					}
+
+					do
+					{
+						menu = ui.getInt("");
+					}
+// -1				0 1 2 3
+// 					1 2 3 4
+					while(menu > (animals.size()));
+					if(menu > 0) ui.print(animalDB.getById(animals.get(menu-1)));
 
 					break;
 
