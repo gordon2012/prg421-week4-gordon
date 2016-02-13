@@ -1,3 +1,6 @@
+// http://stackoverflow.com/a/1066603
+// Iterator it = animals.entrySet().iterator();
+
 import java.util.*;
 public class Main
 {
@@ -16,18 +19,26 @@ public class Main
 			switch(ui.getChar(""))
 			{
 				case "1":
-					Map<Integer, Animal> animals = animalDB.listAnimals();
+					// Map<Integer, Animal> animals = animalDB.listAnimals();
 					// for(Animal a : animals)
 
-					// http://stackoverflow.com/a/1066603
-					Iterator it = animals.entrySet().iterator();
-					while(it.hasNext())
+					List<Integer> animals = animalDB.getAllIds();
+					// for(Integer id : animals){ui.print(id + "\n");}
+
+					for(int i = 0; i < animals.size(); i++)
 					{
-						Map.Entry pair = (Map.Entry)it.next();
-						Animal a = (Animal)pair.getValue();
-						ui.print(pair.getKey() + " - " + a.getName() + "\n");
-						it.remove();
+						ui.print((i+1) + "(id: " + animals.get(i) + ") - " + animalDB.getById(animals.get(i)).getName() +"\n");
 					}
+
+
+
+					// while(it.hasNext())
+					// {
+					// 	Map.Entry pair = (Map.Entry)it.next();
+					// 	Animal a = (Animal)pair.getValue();
+					// 	ui.print(pair.getKey() + " - " + a.getName() + "\n");
+					// 	it.remove();
+					// }
 
 
 
@@ -50,7 +61,7 @@ public class Main
 					break;
 
 				case "2":
-					Animal animal = new Animal(
+					animalDB.insert(new Animal(
 						ui.getInput("Name"),
 						ui.getInput("Color"),
 						ui.getInt("# of Legs"),
@@ -59,8 +70,8 @@ public class Main
 						ui.getBool("Burrows[y/N]"),
 						ui.getBool("Swims[y/N]"),
 						ui.getBool("Flies[y/N]")
-					);
-					ui.print("\n" + animal);
+					));
+					// ui.print("\n" + animal);
 					break;
 
 

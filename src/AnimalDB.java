@@ -1,3 +1,10 @@
+// auto increment
+// http://stackoverflow.com/a/4212603
+
+// table exists?
+// http://stackoverflow.com/a/5866339
+
+
 import java.util.*;
 import java.sql.*;
 public class AnimalDB
@@ -37,11 +44,6 @@ public class AnimalDB
 		{
 			System.out.println("ERROR: " + e.getMessage());
 		}
-			// auto increment
-			// http://stackoverflow.com/a/4212603
-
-			// table exists?
-			// http://stackoverflow.com/a/5866339
 
 
 
@@ -62,15 +64,15 @@ public class AnimalDB
 				+ "flies boolean)");
 			System.out.println("Table created");
 
-
 			insert(new Animal("Lion", "Gold", 4, 0, 1, false, true, false));
+			System.out.println("Row created");
 
-			// conn.createStatement().execute("INSERT INTO Animals VALUES (, 'Worm', 'Red', 0, 0, 1, true, true, false)");
-			// System.out.println("Row created");
-			// conn.createStatement().execute("INSERT INTO Animals VALUES ('Lion', 'Gold', 4, 0, 1, false, true, false)");
-			// System.out.println("Row created");
-			// conn.createStatement().execute("INSERT INTO Animals VALUES ('Fish', 'Green', 0, 0, 1, false, true, false)");
-			// System.out.println("Row created");
+			insert(new Animal("Tiger", "Yellow", 4, 0, 1, false, true, false));
+			System.out.println("Row created");
+
+			insert(new Animal("Bear", "Black", 2, 2, 0, false, true, false));
+			System.out.println("Row created");
+
 		}
 		catch(SQLException e)
 		{
@@ -115,21 +117,6 @@ public class AnimalDB
 
 	public void insert(Animal animal)
 	{
-		// String qry = "INSERT INTO Animals VALUES (1, 'Worm', 'Red', 0, 0, 1, true, true, false)";
-		// Statement s2;
-		// try
-		// {
-		// 	s2 = conn.createStatement();
-		// 	s2.execute(qry);
-		// 	System.out.println("Row created");
-		// }
-		// catch(Exception e)
-		// {
-		// 	System.out.println("ERROR: " + e.getMessage());
-		// }
-
-
-
 		try(PreparedStatement ps = conn.prepareStatement("INSERT INTO Animals (name, color, legs, arms, tails, burrows, swims, flies) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"))
 		{
 			ps.setString(1, animal.getName());
@@ -149,6 +136,54 @@ public class AnimalDB
 
 	}
 
+	public List<Integer> getAllIds()
+	{
+		List<Integer> animals = new ArrayList<Integer>();
+		try(ResultSet rs = conn.createStatement().executeQuery("SELECT id FROM Animals"))
+		{
+			while(rs.next())
+			{
+				animals.add(rs.getInt("id"));
+			}
+		}
+		catch(Exception e)
+		{
+			System.out.println("ERROR(getAllIds): " + e.getMessage());
+		}
+		return animals;
+	}
+
+
+	public Animal getById(int id)
+	{
+		Animal animal = null;
+		String qry = "SELECT * FROM Animals WHERE id = " + id;
+		try(ResultSet rs = conn.createStatement().executeQuery(qry))
+		{
+			while(rs.next())
+			{
+				animal = new Animal(
+					rs.getString("name"),
+					rs.getString("color"),
+					rs.getInt("legs"),
+					rs.getInt("arms"),
+					rs.getInt("tails"),
+					rs.getBoolean("burrows"),
+					rs.getBoolean("swims"),
+					rs.getBoolean("flies")
+				);
+				// animals.add(rs.getInt("id"));
+			}
+		}
+		catch(Exception e)
+		{
+			System.out.println("ERROR(getById): " + e.getMessage());
+		}
+		return animal;
+
+
+		// return new Animal(
+	}
 
 
 
