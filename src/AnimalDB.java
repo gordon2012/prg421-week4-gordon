@@ -12,10 +12,12 @@ public class AnimalDB
 	private static final AnimalDB instance = new AnimalDB();
 
 	private Connection conn;
+	private UI ui;
 
 	private AnimalDB()
 	{
 		// init?
+		ui = UI.getInstance();
 	}
 
 	public static final AnimalDB getInstance()
@@ -28,7 +30,7 @@ public class AnimalDB
 		try
 		{
 			DriverManager.registerDriver(new org.apache.derby.jdbc.EmbeddedDriver());
-			System.out.println("Driver registered");
+			ui.debug("Driver registered\n");
 		}
 		catch(Exception e)
 		{
@@ -38,7 +40,7 @@ public class AnimalDB
 		try
 		{
 			conn = DriverManager.getConnection("jdbc:derby:db/AnimalDB;create=true");
-			System.out.println("Connection established");
+			ui.debug("Connection established\n");
 		}
 		catch(Exception e)
 		{
@@ -62,21 +64,21 @@ public class AnimalDB
 				+ "burrows boolean, "
 				+ "swims boolean, "
 				+ "flies boolean)");
-			System.out.println("Table created");
+			ui.debug("Table created\n");
 
 			insert(new Animal("Lion", "Gold", 4, 0, 1, false, true, false));
-			System.out.println("Row created");
+			ui.debug("Row created\n");
 
 			insert(new Animal("Tiger", "Yellow", 4, 0, 1, false, true, false));
-			System.out.println("Row created");
+			ui.debug("Row created\n");
 
 			insert(new Animal("Bear", "Black", 2, 2, 0, false, true, false));
-			System.out.println("Row created");
+			ui.debug("Row created\n");
 
 		}
 		catch(SQLException e)
 		{
-			System.out.println("Table NOT created: " + e.getMessage());
+			ui.debug("Table NOT created: " + e.getMessage() + "\n");
 		}
 
 

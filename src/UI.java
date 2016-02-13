@@ -4,15 +4,22 @@ public class UI
 {
 	private static final UI instance = new UI();
 	private Scanner input;
+	private boolean debug;
 
 	private UI()
 	{
 		input = new Scanner(System.in);
+		debug = false;
 	}
 
 	public static final UI getInstance()
 	{
 		return instance;
+	}
+
+	public void setDebug(boolean debug)
+	{
+		this.debug = debug;
 	}
 
 	// Print methods
@@ -26,6 +33,19 @@ public class UI
 	{
 		print(o.toString());
 	}
+
+	public void debug(String s)
+	{
+		if(debug) print(s);
+	}
+
+	public void debug(Object o)
+	{
+		debug(o.toString());
+	}
+
+
+
 
 	// User Input methods
 	//
