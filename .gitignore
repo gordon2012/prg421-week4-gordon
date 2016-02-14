@@ -1,4 +1,5 @@
 /nbproject/private/
-/build/
+/build/classes/*.class
+/build/classes/.netbeans*
 /db/
 derby.log
