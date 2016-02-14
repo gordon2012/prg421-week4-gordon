@@ -22,6 +22,7 @@ public class UI
 		this.debug = debug;
 	}
 
+
 	// Print methods
 	//
 	public void print(String s)
@@ -43,8 +44,6 @@ public class UI
 	{
 		debug(o.toString());
 	}
-
-
 
 
 	// User Input methods

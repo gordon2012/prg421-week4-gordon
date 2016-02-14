@@ -1,29 +1,23 @@
-// auto increment
-// http://stackoverflow.com/a/4212603
-
-// table exists?
-// http://stackoverflow.com/a/5866339
-
-
 import java.util.*;
 import java.sql.*;
 public class AnimalDB
 {
 	private static final AnimalDB instance = new AnimalDB();
-
 	private Connection conn;
 	private UI ui;
 
+
 	private AnimalDB()
 	{
-		// init?
 		ui = UI.getInstance();
 	}
+
 
 	public static final AnimalDB getInstance()
 	{
 		return instance;
 	}
+
 
 	public void init()
 	{
@@ -34,7 +28,7 @@ public class AnimalDB
 		}
 		catch(Exception e)
 		{
-			System.out.println("ERROR: " + e.getMessage());
+			ui.print("ERROR(init-register): " + e.getMessage() + "\n");
 		}
 
 		try
@@ -44,18 +38,13 @@ public class AnimalDB
 		}
 		catch(Exception e)
 		{
-			System.out.println("ERROR: " + e.getMessage());
+			ui.print("ERROR(init-connection): " + e.getMessage() + "\n");
 		}
 
-
-
-		Statement s;
-		try
+		try(Statement s = conn.createStatement())
 		{
-			s = conn.createStatement();
 			s.execute("CREATE TABLE Animals("
 				+ "id INT NOT NULL GENERATED ALWAYS AS IDENTITY, "
-				// + "id int, "
 				+ "name varchar(40), "
 				+ "color varchar(40), "
 				+ "legs int, "
@@ -74,46 +63,11 @@ public class AnimalDB
 
 			insert(new Animal("Bear", "Black", 2, 2, 0, false, true, false));
 			ui.debug("Row created\n");
-
 		}
 		catch(SQLException e)
 		{
 			ui.debug("Table NOT created: " + e.getMessage() + "\n");
 		}
-
-
-
-
-	}
-
-	public Map<Integer, Animal> listAnimals()
-	{
-		// Statement s;
-		Map<Integer, Animal> animals = new HashMap<Integer, Animal>();
-		try
-		{
-			// s = conn.createStatement();
-			ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM Animals");
-			while(rs.next())
-			{
-				// Animal animal = new Animal(
-				animals.put(rs.getInt("id"), new Animal(
-					rs.getString("name"),
-					rs.getString("color"),
-					rs.getInt("legs"),
-					rs.getInt("arms"),
-					rs.getInt("tails"),
-					rs.getBoolean("burrows"),
-					rs.getBoolean("swims"),
-					rs.getBoolean("flies")
-				));
-			}
-		}
-		catch(Exception e)
-		{
-			System.out.println("ERROR(list): " + e.getMessage());
-		}
-		return animals;
 	}
 
 
@@ -133,10 +87,25 @@ public class AnimalDB
 		}
 		catch(Exception e)
 		{
-			System.out.println("ERROR(insert): " + e.getMessage());
+			ui.print("ERROR(insert): " + e.getMessage() + "\n");
 		}
-
 	}
+
+
+	public void delete(int id)
+	{
+		String qry = "DELETE FROM Animals WHERE id=" + id;
+		try(Statement s = conn.createStatement())
+		{
+			int count = s.executeUpdate(qry);
+			ui.debug(count + " row(s) deleted\n");
+		}
+		catch(Exception e)
+		{
+			ui.print("ERROR(delete): " + e.getMessage() + "\n");
+		}
+	}
+
 
 	public List<Integer> getAllIds()
 	{
@@ -150,7 +119,7 @@ public class AnimalDB
 		}
 		catch(Exception e)
 		{
-			System.out.println("ERROR(getAllIds): " + e.getMessage());
+			ui.print("ERROR(getAllIds): " + e.getMessage() + "\n");
 		}
 		return animals;
 	}
@@ -174,20 +143,12 @@ public class AnimalDB
 					rs.getBoolean("swims"),
 					rs.getBoolean("flies")
 				);
-				// animals.add(rs.getInt("id"));
 			}
 		}
 		catch(Exception e)
 		{
-			System.out.println("ERROR(getById): " + e.getMessage());
+			ui.print("ERROR(getById): " + e.getMessage() + "\n");
 		}
 		return animal;
-
-
-		// return new Animal(
 	}
-
-
-
-
 }

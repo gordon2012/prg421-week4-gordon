@@ -23,14 +23,14 @@ public class Animal
 
 	public String toString()
 	{
-		return(name + ": " +
-			color + ", " +
-			legs + (legs == 1 ? " leg, " : " legs, ") +
-			arms + (arms == 1 ? " arm, " : " arms, ") +
-			tails + (tails == 1 ? " tail, " : " tails, ") +
-			(burrow ? "burrows, " : "cannot burrow, ") +
-			(swim ? "swims, " : "cannot swim, ") +
-			(fly ? "flies." : "cannot fly.\n"));
+		return(name + ": " + "\n" +
+			"  " + color + "\n" +
+			"  " + legs + (legs == 1 ? " leg" : " legs") + "\n" +
+			"  " + arms + (arms == 1 ? " arm" : " arms") + "\n" +
+			"  " + tails + (tails == 1 ? " tail" : " tails") + "\n" +
+			"  " + (burrow ? "burrows" : "cannot burrow") + "\n" +
+			"  " + (swim ? "swims" : "cannot swim") + "\n" +
+			"  " + (fly ? "flies" : "cannot fly"));
 	}
 
 	public String getName()
